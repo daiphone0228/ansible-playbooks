@@ -30,7 +30,7 @@
    - MySQL-python
 
 - name: Create Mysql configuration file
-  template: src=my.cnf.tpl dest=/etc/my.cnf
+  template: src=my.cnf.tpl dest=/etc/my.cnf.d/default.cnf
   notify:
   - restart mariadb
 
