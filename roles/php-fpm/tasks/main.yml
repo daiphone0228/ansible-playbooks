@@ -1,0 +1,34 @@
+---
+- name: install php-fpm
+  yum: name=php-fpm state=latest
+
+- name: check php-fpm installed
+  stat: path=/etc/php-fpm.d/*
+  register: register
+
+- name: apply php-fpm.conf
+  template: src=./php-fpm.conf.tpl dest=/etc/php-fpm.d/www.conf backup=yes
+  # when: register.stat.exists
+
+- name: restart php-fpm
+  service: name=php-fpm state=restarted
+
+- name: chkconfig php-fpm
+  command: chkconfig php-fpm on
+
+# - name: install php rpm
+#       yum: name=http://rpms.famillecollet.com/enterprise/remi-release-6.rpm state=present
+
+- name: install php
+  yum: pkg={{item}} enablerepo=remi,remi-php71 state=present
+  with_items:
+    - php
+    - php-devel
+    - php-common
+    - php-gd
+    - php-mbstring
+    - php-mysql
+    - php-pdo
+    - php-pear
+    - php-xml
+  # when: register.stat.exists
