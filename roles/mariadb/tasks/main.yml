@@ -1,32 +1,13 @@
 ---
-# - name: install mysql rpm
-#   yum: pkg={{item}} state=present
-#   with_items:
-#     - http://dev.mysql.com/get/Downloads/MySQL-5.6/MySQL-shared-compat-5.6.23-1.el6.x86_64.rpm
-#     - http://dev.mysql.com/get/Downloads/MySQL-5.6/MySQL-shared-5.6.23-1.el6.x86_64.rpm
-#     - http://dev.mysql.com/get/Downloads/MySQL-5.6/MySQL-server-5.6.23-1.el6.x86_64.rpm
-#     - http://dev.mysql.com/get/Downloads/MySQL-5.6/MySQL-client-5.6.23-1.el6.x86_64.rpm
-#     - http://dev.mysql.com/get/Downloads/MySQL-5.6/MySQL-devel-5.6.23-1.el6.x86_64.rpm
-#
-# - name: install mysql
-#   yum: pkg={{item}} state=present
-#   with_items:
-#     - MySQL-client.x86_64
-#     - MySQL-devel.x86_64
-#     - MySQL-server.x86_64
-#     - MySQL-shared-compat.x86_64
-#     - MySQL-shared.x86_64
-#
-# - name: chkconfig mysql
-#   command: chkconfig mysql on
-#
-# - name: restart mysql
-#   service: name=mysql state=restarted
+- name: Move MariaDB repository to nginx-server
+  template: src=MariaDB.repo.tpl dest=/etc/yum.repos.d/MariaDB.repo
 
 - name: Install MariaDB package
   yum: name={{ item }} state=installed
   with_items:
-   - mariadb-server
+   - MariaDB-devel
+   - MariaDB-client
+   - MariaDB-server
    - MySQL-python
 
 - name: Create Mysql configuration file
