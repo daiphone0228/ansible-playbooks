@@ -6,7 +6,7 @@
   gather_facts: no
 
   roles:
-    # - common
-    # - nginx
-    # - php-fpm
+    - common
+    - nginx
+    - php-fpm
     - mariadb

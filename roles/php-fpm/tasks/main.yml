@@ -20,7 +20,7 @@
 #       yum: name=http://rpms.famillecollet.com/enterprise/remi-release-6.rpm state=present
 
 - name: install php
-  yum: pkg={{item}} enablerepo=remi,remi-php71 state=present
+  yum: pkg={{item}} enablerepo=remi,remi-php72 state=present
   with_items:
     - php
     - php-devel

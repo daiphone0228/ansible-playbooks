@@ -16,15 +16,15 @@
 
 # The following options will be passed to all MySQL clients
 [client]
-#password       = your_password
-port            = 3306
+user            = root
+password        = {{ mysql_root_password }}
+port            = {{ mysql_port }}
 socket          = /var/lib/mysql/mysql.sock
-default-character-set = utf8
 
 # Here follows entries for some specific programs
 
 # The MySQL server
-[mysqld]
+[{{ mysqlservice }}]
 port            = 3306
 socket          = /var/lib/mysql/mysql.sock
 skip-external-locking
@@ -36,7 +36,7 @@ read_buffer_size = 256K
 read_rnd_buffer_size = 256K
 net_buffer_length = 2K
 thread_stack = 240K
-default-character-set = utf8
+character-set-server=utf8
 datadir=/var/lib/mysql
 
 # Don't listen on a TCP/IP port at all. This can be a security enhancement,
@@ -44,7 +44,6 @@ datadir=/var/lib/mysql
 # All interaction with mysqld must be made via Unix sockets or named pipes.
 # Note that using this option without enabling named pipes on Windows
 # (using the "enable-named-pipe" option) will render mysqld useless!
- 7月 16 17:58:32 nginx-srv systemd[1]: mariadb.service failed.
 #
 #skip-networking
 server-id       = 1
@@ -82,6 +81,7 @@ max_allowed_packet = 16M
 
 [mysql]
 no-auto-rehash
+default-character-set = utf8
 # Remove the next comment character if you are not familiar with SQL
 #safe-updates
 

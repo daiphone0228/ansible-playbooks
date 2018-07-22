@@ -1,7 +1,12 @@
 # install epel repository and remi repository
 ---
+- name: yum -y update
+  yum: name=* state=latest
+  async: 5
+  poll: 0
+
 - name: check remi-release-7
-  stat: path=/etc/yum.repos.d/remi-php70.repo
+  stat: path=/etc/yum.repos.d/remi-php72.repo
   register: remi_release_7
 
 # ↓これはデバッグ用のため、不要となったら削除する。

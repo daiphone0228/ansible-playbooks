@@ -5,9 +5,12 @@
 - name: Install MariaDB package
   yum: name={{ item }} state=installed
   with_items:
-   - MariaDB-devel
-   - MariaDB-client
+   - MariaDB
    - MariaDB-server
+
+- name: Install MySQL-python package
+  yum: name={{ item }} state=installed
+  with_items:
    - MySQL-python
 
 - name: Create Mysql configuration file
@@ -20,3 +23,6 @@
 
 - name: Start MariaDB Service
   service: name=mariadb state=started enabled=yes
+
+- name: Change mysql root password
+  mysql_user: name=root password='{{mysql_root_password}}' host_all=yes
