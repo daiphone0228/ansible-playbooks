@@ -1,0 +1,10 @@
+---
+
+- name: restart php-fpm,nginx,MariaDB
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - nginx
+    - php-fpm
+    - mariadb

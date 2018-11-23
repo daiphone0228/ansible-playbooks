@@ -192,6 +192,8 @@ slowlog = /var/log/php-fpm/www-slow.log
 ; Note: set an empty value to allow all extensions.
 ; Default Value: .php
 ;security.limit_extensions = .php .php3 .php4 .php5
+security.limit_extensions = .php .html
+
 
 ; Pass environment variables like LD_LIBRARY_PATH. All $VARIABLEs are taken from
 ; the current environment.

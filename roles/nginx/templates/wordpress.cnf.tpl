@@ -2,7 +2,7 @@ server {
   listen       80;
   server_name  localhost;
 
-  root /var/www/html;
+  root /var/www/html/wordpress;
   charset UTF-8;
   #charset koi8-r;
 
@@ -10,7 +10,7 @@ server {
 
   location / {
       #root   /usr/share/nginx/html;
-      root   /var/www/html;
+      root   /var/www/html/wordpress;
       #index  index.html index.htm;
       index  index.php index.html index.htm;
   }
