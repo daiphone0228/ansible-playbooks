@@ -21,9 +21,13 @@
     state: latest
   when: is_exist.stat.exists == false
 
+- debug: var=is_exist.stat.exists
+
 - name: install EPEL repository
   yum: name=epel-release state=present
   register: is_installed
+
+- debug: var=is_installed
 
 - name: install ius repository
   yum:
@@ -35,11 +39,15 @@
   yum: list=git2u
   register: is_installed
 
+- debug: var=is_installed
+
 - name: remove old git
   yum: name=git state=absent
   when: is_installed.results|selectattr("yumstate", "match", "installed")|list|length == 0
   register: is_removed
 
+- debug: var=is_removed.results
+
 - name: install the latest version of git
   yum: name=git2u state=latest
-  when: is_removed.changed == true
+  when: is_removed.changed == true or "is_removed.results in 'git is not installed'"

@@ -3,31 +3,46 @@
   template: src=MariaDB.repo.tpl dest=/etc/yum.repos.d/MariaDB.repo
 
 - name: Install MariaDB package
-  yum: name={{ item }} state=installed
-  with_items:
-   - MariaDB
-   - MariaDB-server
+  yum:
+    name: "{{ packages }}"
+    state: installed
+  vars:
+    packages:
+     - MariaDB
+     - MariaDB-server
 
 - name: Install MySQL-python package
-  yum: name={{ item }} state=installed
-  with_items:
-   - MySQL-python
+  yum:
+    name: "{{ packages }}"
+    state: installed
+  vars:
+    packages:
+     - MySQL-python
 
 - name: Create Mysql configuration file
   template: src=my.cnf.tpl dest=/etc/my.cnf.d/default.cnf
   notify:
   - restart mariadb
 
-# - name: Create MariaDB log file
-#   file: path=/var/log/mysqld.log state=touch owner=mysql group=mysql mode=0775
+- name: Create MariaDB log file
+  file: path=/var/log/mysqld.log state=touch owner=mysql group=mysql mode=0775
 
 - name: Start MariaDB Service
   service: name=mariadb state=started enabled=yes
 
-- name: Change mysql root password
+-  debug:
+    msg: "user is {{ mysql_root_user }} , password is {{ mysql_root_password }}"
+
+- name: set root password
   mysql_user:
     name: "{{ mysql_root_user }}"
+    host: localhost
     password: "{{ mysql_root_password }}"
-    login_user: "{{ mysql_root_user }}"
-    login_password: "{{ mysql_root_password }}"
-    host_all: yes
+
+#- name: Change mysql root password
+#  mysql_user:
+#    name: "{{ mysql_root_user }}"
+#    password: "{{ mysql_root_password }}"
+#    login_user: "{{ mysql_root_user }}"
+#    login_password: "{{ mysql_root_password }}"
+#    host_all: yes

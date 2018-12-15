@@ -20,15 +20,19 @@
 #       yum: name=http://rpms.famillecollet.com/enterprise/remi-release-6.rpm state=present
 
 - name: install php
-  yum: pkg={{item}} enablerepo=remi,remi-php72 state=present
-  with_items:
-    - php
-    - php-devel
-    - php-common
-    - php-gd
-    - php-mbstring
-    - php-mysql
-    - php-pdo
-    - php-pear
-    - php-xml
+  yum:
+    name: "{{ packages }}"
+    enablerepo: remi,remi-php72
+    state: present
+  vars:
+    packages:
+      - php
+      - php-devel
+      - php-common
+      - php-gd
+      - php-mbstring
+      - php-mysql
+      - php-pdo
+      - php-pear
+      - php-xml
   # when: register.stat.exists

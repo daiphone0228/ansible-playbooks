@@ -9,8 +9,6 @@ server {
   #access_log  /var/log/nginx/host.access.log  main;
 
   location / {
-      #root   /usr/share/nginx/html;
-      root   /var/www/html/wordpress;
       #index  index.html index.htm;
       index  index.php index.html index.htm;
   }
@@ -40,7 +38,6 @@ server {
   #    include        fastcgi_params;
   #}
   location ~ \.php$ {
-      root           /var/www/html;
       fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
       fastcgi_index  index.php;
       fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
@@ -53,4 +50,7 @@ server {
   #location ~ /\.ht {
   #    deny  all;
   #}
+
+  set $debug_val "$document_root$fastcgi_script_name";
+  access_log /var/log/nginx/debug_val.log debug_val_format;
 }

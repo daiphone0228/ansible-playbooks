@@ -1,4 +1,3 @@
-
 ---
 - name: Install Nginx, php-fpm and MariaDB
   hosts: nginx-servers
