@@ -1,13 +1,13 @@
 ---
 - name: Install Nginx, php-fpm and MariaDB
   hosts: nginx-servers
-  remote_user: vagrant
+  remote_user: root
   become: yes
   gather_facts: no
 
   roles:
-    - common
-    - nginx
-    - php-fpm
-    - mariadb
+    # - common
+    # - nginx
+    # - php-fpm
+    # - mariadb
     - wordpress

@@ -1,18 +1,26 @@
 # install epel repository and remi repository
 ---
 - name: set timezone
-  file: src=/usr/share/zoneinfo/Asia/Tokyo dest=/etc/localtime state=link
+  file:
+    src: /usr/share/zoneinfo/Asia/Tokyo
+    dest: /etc/localtime
+    state: link
 
 - name: yum -y update
-  yum: name=* state=latest
+  yum:
+    name: '*'
+    state: latest
   async: 5
   poll: 0
 
 - name: install yum-utils
-  yum: name=yum-utils state=present
+  yum:
+    name: yum-utils
+    state: present
 
 - name: check if remi-release-7 repository is exist
-  stat: path=/etc/yum.repos.d/remi-php72.repo
+  stat:
+    path: /etc/yum.repos.d/remi-php72.repo
   register: is_exist
 
 - name: install remi-release-7
@@ -21,33 +29,57 @@
     state: latest
   when: is_exist.stat.exists == false
 
-- debug: var=is_exist.stat.exists
+- debug:
+    var: is_exist.stat.exists
 
 - name: install EPEL repository
-  yum: name=epel-release state=present
+  yum:
+    name: epel-release
+    state: present
   register: is_installed
 
-- debug: var=is_installed
+- debug:
+    var: is_installed
 
 - name: install ius repository
   yum:
-    name: https://dl.iuscommunity.org/pub/ius/stable/CentOS/7/x86_64/ius-release-1.0-15.ius.centos7.noarch.rpm
-    state: latest
+    name: 'https://centos7.iuscommunity.org/ius-release.rpm'
+    state: present
   when: is_installed is success
+  register: ius_repository
+
+- name: disable ius repository
+  shell: yum-config-manager --disable ius
+  when: ius_repository.changed
 
 - name: check if git2u is installed
-  yum: list=git2u
+  yum:
+    list: git2u
   register: is_installed
 
-- debug: var=is_installed
+- debug:
+    var: is_installed
 
 - name: remove old git
-  yum: name=git state=absent
+  yum:
+    name: git
+    state: absent
   when: is_installed.results|selectattr("yumstate", "match", "installed")|list|length == 0
   register: is_removed
 
-- debug: var=is_removed.results
+- debug:
+    var: is_removed
 
-- name: install the latest version of git
-  yum: name=git2u state=latest
+# - name: install the latest version of git
+#   yum:
+#     name: git2u-all
+#     state: latest
+#   when: is_removed.changed == true or "is_removed.results in 'git is not installed'"
+
+- name: install the newest git
+  yum:
+    name: git2u-all
+    enablerepo: ius
+    # disablerepo: base,epel,extras,updates
+    state: present
   when: is_removed.changed == true or "is_removed.results in 'git is not installed'"

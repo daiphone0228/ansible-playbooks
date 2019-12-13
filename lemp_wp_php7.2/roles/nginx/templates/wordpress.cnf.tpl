@@ -1,12 +1,13 @@
 server {
   listen       80;
+  # localhostではなく、install先のIPまたはdomainを指定する
   server_name  localhost;
 
   root /var/www/html/wordpress;
   charset UTF-8;
   #charset koi8-r;
 
-  #access_log  /var/log/nginx/host.access.log  main;
+  access_log  /var/log/nginx/host.access.log  main;
 
   location / {
       #index  index.html index.htm;
@@ -51,6 +52,6 @@ server {
   #    deny  all;
   #}
 
-  set $debug_val "$document_root$fastcgi_script_name";
-  access_log /var/log/nginx/debug_val.log debug_val_format;
+  #set $debug_val "$document_root$fastcgi_script_name";
+  #access_log /var/log/nginx/debug_val.log debug_val_format;
 }
